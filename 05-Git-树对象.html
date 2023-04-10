@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 构建树对象
+        树对象（tree object），它能解决文件名保存的问题，也允许我们将多个文件组织到一起。Git 以一种类似于UNIX 文件系统的方式存储内容。所有内容均以树对象和数据对象(git对象)的形式存储，其中树对象对应了UNIX 中的目录项，数据对象(git对象)则大致上对应文件内容。一个树对象包含了一条或多条记录（每条记录含有一个指向git对象或者子树对象的SHA-1 指针，以及相应的模式、类型、文件名信息）。一个树对象也可以包含另一个树对象。
+        我们可以通过update-index；write-tree；read-tree等命令来构建树对像并塞入到暂存区。
+        假设我们做了一系列操作之后得到一个树对象。
+    
+        操作
+        1.利用update-index命令为test.txt 文件的首个版本  创建一个暂存区。并通过write-tree命令生成树对象。
+        命令：
+        git update-index --add --cacheinfo 100644 83baae61804e65cc73a7201a7252750c76066a30 test.txt
+        git write-tree
+        文件模式为 
+        100644，表明这是一个普通文件
+        100755，表示一个可执行文件；
+        120000，表示一个符号链接。
+        
+        --add选项：
+            因为此前该文件并不在暂存区中首次需要—add
+        --cacheinfo选项：
+            因为将要添加的文件位于Git 数据库中，而不是位于当前目录下 所有需要—cacheinfo
+        2.新增new.txt  将new.txt和test.txt 文件的第二个个版本塞入暂存区。并通过write-tree命令生成树对象。
+        命令：
+        echo 'new file' > new.txt
+        git update-index --cacheinfo 100644 
+        1f7a7a472abf3dd9643fd615f6da379c4acb3e3a test.txt
+        git update-index --add new.txt
+        git write-tree
+        
+        
+        3.将第一个树对象加入第二个树对象，使其成为新的树对象
+        命令：
+        git read-tree 
+        --prefix=bak d8329fc1cc938780ffdd9f94e0d364e0ea74f579
+        git write-tree
+        read-tree命令，可以把树对象读入暂存区
+        
+        图示（最后的树对象）
+
+
+
+        问题
+        现在有三个树对象（执行了三次write-tree），分别代表了我们想要跟踪的不同项目快照。然而问题依旧：若想重用这些快照，你必须记住所有三个SHA-1 哈希值。并且，你也完全不知道是谁保存了这些快照，在什么时刻保存的，以及为什么保存这些快照。而以上这些，正是提交对象（commit object）能为你保存的基本信息
+        树对象
+        查看暂存区当前的样子
+        git ls-files -s
+        查看树对象
+        命令：
+        git cat-file -p master^{tree}（或者是树对象的hash）
+        master^{tree}语法表示 master分支上最新的提交所指向的树对象。
+        返回:
+        100644 blob a906cb2a4a904a152e80877d4088654daad0c859      README100644 blob 8f94139338f9404f26296befa88755fc2598c289      Rakefile040000 tree 99f1a6d12cb4b6f19c8655fca46c3ecf317074e0      lib
+        图示：
+
+
+
+
+        ### 查看暂存区中的内容    
+        git ls-files -s
+
+
+
+        ### 列出 Git 仓库 中 的 文件 和 目录
+        git ls-files
+        树对象 是 暂存区 的 快照。 
+
+        git 对象 是 文件的 一次次 版本。 tree 对象 是 项目的 一次次 版本。 
+-->
+
+</body>
+</html>
